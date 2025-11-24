@@ -1,0 +1,10 @@
+html,body { height:100%; }
+#app { min-height:100vh; }
+.sidebar { width:220px; display:flex; flex-direction:column; gap:10px; }
+.main { background:#f8f9fb; min-height:100vh; display:flex; flex-direction:column; }
+.dropzone { border:2px dashed #ced4da; padding:16px; text-align:center; border-radius:6px; cursor:pointer; background:#fff; }
+.thumb { max-height:80px; border-radius:6px; }
+.section { background:#fff; padding:20px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+.nav-link.active { font-weight:600; }
+.small { font-size:0.9rem; }
+.auth-page { min-height:100vh; background:#f6f7fb; }

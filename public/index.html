@@ -1,0 +1,1075 @@
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyShop</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+
+    
+
+    <style>
+      :root {
+        --blue: #3498db;
+        --teal: #1abcbc;
+        --white: #ffffff;
+      }
+
+      body {
+        padding-top: 80px;
+        background: #f7f7f7;
+      }
+
+      /* Navbar */
+      nav.navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 9999;
+      }
+
+      @media (max-width: 991px) {
+        nav.navbar {
+          background: linear-gradient(90deg, var(--blue), var(--teal)) !important;
+        }
+      }
+
+      .navbar-nav .nav-link {
+        font-weight: 600;
+        color: #222;
+        transition: 0.25s;
+      }
+
+      .navbar-nav .nav-link.active {
+        color: var(--teal) !important;
+        position: relative;
+        font-weight: 600;
+      }
+
+      .navbar-nav .nav-link.active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -3px;
+        height: 2px;
+        background: var(--teal);
+        border-radius: 2px;
+      }
+
+      /* Desktop Search */
+      @media (min-width: 992px) {
+        .search-wrapper {
+          flex-grow: 1;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+      }
+
+      .search-wrapper .form-control {
+        border-radius: 50px 0 0 50px;
+        border: 2px solid var(--teal);
+        height: 46px;
+      }
+
+      .search-wrapper .btn-dark {
+        border-radius: 0 50px 50px 0;
+        background: linear-gradient(45deg, var(--blue), var(--teal));
+        border: none;
+        width: 60px;
+      }
+
+      /* Mobile Search Box */
+      #mobileSearchBox {
+        display: none;
+        background: #fff;
+        padding: 12px;
+        width: 100%;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+        border-bottom: 3px solid var(--teal);
+        position: fixed;
+        top: 60px;
+        left: 0;
+        z-index: 99999;
+      }
+
+      /* Autocomplete */
+      .autocomplete-box {
+        position: absolute;
+        width: 100%;
+        background: #fff;
+        max-height: 230px;
+        overflow-y: auto;
+        border-radius: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        display: none;
+        z-index: 99999;
+      }
+
+      .autocomplete-box li {
+        padding: 10px 15px;
+        cursor: pointer;
+        list-style: none;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .autocomplete-box li:hover {
+        background: #eef9ff;
+      }
+
+      /* Hamburger */
+      .custom-toggler span {
+        width: 26px;
+        height: 3px;
+        background: white;
+        display: block;
+        margin: 5px 0;
+        border-radius: 6px;
+        transition: 0.3s;
+      }
+
+      /* Hero Slider */
+      .heroSwiper {
+        width: 100%;
+        height: 380px;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .hero-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      @media (max-width: 768px) {
+        .heroSwiper {
+          height: 220px;
+        }
+      }
+
+      /* NEW BRAND CARD UI */
+      .brand-card-new {
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--blue);
+        text-align: center;
+        padding-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: 0.25s;
+        cursor: pointer;
+      }
+
+      .brand-card-new img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+      }
+
+      .brand-card-new:hover {
+        transform: translateY(-5px);
+      }
+
+      .brand-title {
+        font-weight: 600;
+        font-size: 15px;
+        padding-top: 8px;
+        color: #333;
+      }
+
+      /* VIEW MORE CARD */
+      .view-more-card {
+        border: 2px dashed var(--teal);
+        background: #f8ffff;
+        color: var(--teal);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 16px;
+        font-weight: bold;
+        padding: 20px;
+        cursor: pointer;
+        min-height: 160px;
+      }
+
+      .view-more-card i {
+        font-size: 30px;
+        margin-bottom: 8px;
+      }
+
+  /* CATEGORY BLOCK */
+  .category-section {
+    margin-bottom: 40px;
+  }
+
+  .category-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  /* Coupon card (same style as your brand page) */
+  .coupon-card-mini {
+    background: #fff;
+    border-radius: 16px;
+    padding: 15px;
+    border-left: 5px solid var(--blue);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    cursor: pointer;
+    min-height: 150px;
+  }
+
+  .coupon-card-mini .discount {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--blue);
+  }
+
+  /* View More Card */
+  .coupon-view-more {
+    border: 2px dashed var(--teal);
+    background: #f8ffff;
+    border-radius: 16px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .coupon-view-more i {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  /* Load More Categories */
+  #loadMoreCategories {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 35px;
+    border-radius: 30px;
+    font-weight: 600;
+    border: none;
+    background: linear-gradient(45deg, var(--blue), var(--teal));
+    color: white;
+    cursor: pointer;
+  }
+
+  /* Filter Bar */
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .filter-btn {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 2px solid var(--teal);
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .filter-btn.active {
+    background: var(--teal);
+    color: white;
+  }
+  .category-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .coupon-card-mini {
+    background: #fff;
+    border-radius: 18px;
+    padding: 16px;
+    border-left: 6px solid var(--blue);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    cursor: pointer;
+  }
+
+  .coupon-card-mini:hover {
+    transform: translateY(-4px);
+  }
+
+  .coupon-card-mini .discount {
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  .coupon-view-more {
+    border: 2px dashed var(--teal);
+    background: #f8ffff;
+    border-radius: 18px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .coupon-view-more i {
+    font-size: 26px;
+    margin-bottom: 5px;
+  }
+
+      /* MODAL OVERLAY */
+  .custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+  }
+
+  /* MODAL BOX */
+  .custom-modal {
+    background: #fff;
+    width: 90%;
+    max-width: 360px;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.25);
+    animation: scaleIn 0.25s ease-out;
+    position: relative;
+  }
+
+  /* CLOSE BUTTON */
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+  }
+
+  /* MODAL TEXT */
+  .modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .modal-desc {
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 12px;
+    max-height: 70px;
+    overflow: hidden;
+  }
+
+  .modal-category {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 20px;
+  }
+
+  /* BUTTON */
+  .modal-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1abcbc;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Animation */
+  @keyframes scaleIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  /* Updated Coupon Card Styles */
+  .coupon-card-mini {
+    background: #fff;
+    border-radius: 14px;
+      padding: 20px 14px;
+      min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    cursor: pointer;
+    border-left: 6px solid var(--blue);
+    transition: transform 0.2s ease;
+  }
+
+  .coupon-card-mini:hover {
+    transform: translateY(-2px);
+  }
+
+  .coupon-card-mini .discount {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--blue);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .coupon-card-mini .title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .coupon-card-mini .description {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.2;
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* --- TOAST FIX --- */
+      #toastMsg {
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1abcbc;
+        color: white;
+        padding: 14px 22px;
+        border-radius: 10px;
+        font-weight: 600;
+        display: none;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+        z-index: 999999;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0px);
+        }
+      }
+
+      .footer {
+        background:linear-gradient(to right , #3498db4d,#8ed2ffcc), url("./images/image.png") no-repeat top;
+  /* background: ; */
+  color: #555;
+}
+
+.footer-logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.footer-desc {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #555;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #000;
+  letter-spacing: 1px;
+}
+
+/* social icons */
+.social-icons a {
+  margin-right: 12px;
+  font-size: 20px;
+  color: #555;
+  transition: 0.3s;
+}
+
+.social-icons a:hover {
+  color: #3498db;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .footer-logo {
+    text-align: center;
+  }
+
+  .social-icons {
+    text-align: center;
+  }
+}
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm px-3">
+      <div class="container-fluid">
+
+        <button class="navbar-toggler custom-toggler d-lg-none" id="hamburgerBtn" type="button" data-bs-toggle="collapse"
+          data-bs-target="#mainNav">
+          <span></span><span></span><span></span>
+        </button>
+
+        <a href="index.html" class="navbar-brand fw-bold ms-2 text-dark">MyShop</a>
+
+        <!-- Mobile Search Icon -->
+        <button class="btn d-lg-none ms-auto" onclick="openMobileSearch()">
+          <i class="fa fa-search text-white"></i>
+        </button>
+
+        <!-- NAV -->
+        <div class="collapse navbar-collapse" id="mainNav">
+
+          <!-- Desktop Search -->
+          <div class="search-wrapper d-none d-lg-block position-relative">
+            <div class="input-group">
+              <input type="text" id="desktopSearch" class="form-control" placeholder="Search...">
+              <button class="btn btn-dark"><i class="fa fa-search"></i></button>
+            </div>
+            <ul class="autocomplete-box" id="desktopSuggestions"></ul>
+          </div>
+
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a href="./index.html" class="nav-link active mx-2">Home</a></li>
+            <li class="nav-item"><a href="./brands.html" class="nav-link mx-2">Brands</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- MOBILE SEARCH -->
+    <div id="mobileSearchBox">
+      <div class="d-flex">
+        <input type="text" id="mobileSearchInput" class="form-control" placeholder="Search...">
+        <button class="btn btn-danger ms-2" onclick="closeMobileSearch()"><i class="fa fa-times"></i></button>
+      </div>
+      <ul class="autocomplete-box" id="mobileSuggestions"></ul>
+    </div>
+
+    <!-- HERO SLIDER -->
+    <div class="swiper heroSwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide hero-slide"><img src="./images/banner-image3.jpg"></div>
+        <div class="swiper-slide hero-slide"><img src="./images/banner-image3.jpg"></div>
+        <div class="swiper-slide hero-slide"><img src="./images/banner-image3.jpg"></div>
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+
+
+    
+    <!-- BRANDS SECTION -->
+    <section class="my-5 px-3">
+      <div class="d-flex justify-content-between mb-3">
+        <h3 class="fw-bold">Popular Brands</h3>
+      </div>
+
+      <div class="swiper brandSwiper">
+        <div class="swiper-wrapper" id="brandContainer"></div>
+      </div>
+    </section>
+
+
+  <section class="my-5 px-3">
+    <div class="d-flex justify-content-between mb-3">
+      <h3 class="fw-bold">Latest Coupons</h3>
+    </div>
+
+    <!-- Dynamic category container -->
+    <div id="couponCategoryWrapper"></div>
+  </section>
+
+  <!-- ------------ MODAL ------------ -->
+  <div class="custom-modal-overlay" id="couponModal">
+    <div class="custom-modal">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <div id="modalTitle" class="modal-title"></div>
+      <div id="modalDesc" class="modal-desc"></div>
+      <div id="modalCategory" class="modal-category"></div>
+
+      <button id="modalBtn" class="modal-btn">Show Code</button>
+    </div>
+  </div>
+
+  <div id="toastMsg"></div>
+
+
+  <footer class="footer py-5">
+  <div class="container">
+    <div class="row gy-4">
+
+      <!-- Logo + Description -->
+      <div class="col-lg-4 ">
+        <h4 class="footer-logo">MyShop</h4>
+        <p class="footer-desc">
+          MyShop helps shoppers to save time and money in their day-to-day shopping.
+        </p>
+
+        <div class="social-icons mt-3">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <!-- Company -->
+      <div class="col-lg-2">
+        <h5 class="footer-title">Company</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Disclosure Policy</a></li>
+          <li><a href="#">Terms of use</a></li>
+        </ul>
+      </div>
+
+      <!-- General -->
+      <div class="col-lg-2">
+        <h5 class="footer-title">General</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="brands.html">Brands</a></li>
+          <!-- <li><a href="#">Categories</a></li> -->
+        </ul>
+      </div>
+
+      <!-- Popular Stores -->
+      <div class="col-lg-2">
+        <h5 class="footer-title">Popular Stores</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="https://www.amazon.in/">Amazon</a></li>
+          <li><a href="https://www.flipkart.com/">Flipkart</a></li>
+          <li><a href="https://www.myntra.com/">Myntra</a></li>
+          
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+
+
+    <script>
+
+  /* ---------------- MOBILE SEARCH ---------------- */
+  const mobileBox = document.getElementById("mobileSearchBox");
+  const mobileInput = document.getElementById("mobileSearchInput");
+  const mobileList = document.getElementById("mobileSuggestions");
+
+  function openMobileSearch() {
+    mobileBox.style.display = "block";
+    mobileInput.focus();
+  }
+
+  function closeMobileSearch() {
+    mobileBox.style.display = "none";
+    mobileInput.value = "";
+    mobileList.style.display = "none";
+  }
+
+  /* ---------------- LOAD BRANDS (5 + VIEW MORE) ---------------- */
+  async function loadBrands() {
+
+    let res = await fetch("/api/categories");
+    let categories = await res.json();
+
+    const box = document.getElementById("brandContainer");
+    box.innerHTML = "";
+
+    if (!Array.isArray(categories)) return;
+
+    const firstFive = categories.slice(0, 5);
+
+    // Insert only first 5 cards
+    firstFive.forEach(cat => {
+      box.innerHTML += `
+        <div class="swiper-slide">
+          <div class="brand-card-new" onclick="openBrand('${cat.slug}')">
+            <img src="${cat.imagePath}">
+            <div class="brand-title">${cat.title}</div>
+          </div>
+        </div>`;
+    });
+
+    // Add 6th "VIEW MORE" card
+    if (categories.length > 5) {
+      box.innerHTML += `
+        <div class="swiper-slide">
+          <div class="view-more-card" onclick="window.location.href='brands.html'">
+            <i class="fa-solid fa-arrow-right"></i>
+            <p>View More</p>
+          </div>
+        </div>`;
+    }
+
+    brandSwiper.update();
+  }
+
+  function openBrand(slug) {
+    window.location.href = `/brand/${slug}`;
+  }
+
+  /* Brand Swiper */
+  var brandSwiper = new Swiper(".brandSwiper", {
+    slidesPerView: 2.2,
+    spaceBetween: 15,
+    breakpoints: {
+      576: { slidesPerView: 3 },
+      768: { slidesPerView: 4 },
+      992: { slidesPerView: 5 }
+    }
+  });
+
+  /* ---------------- SEARCH SYSTEM ---------------- */
+
+  let searchList = []; // [{title:"Ajio", slug:"ajio"}, ...]
+
+  async function loadSearchData() {
+    let catReq = await fetch("/api/categories");
+    let categories = await catReq.json();
+    if (!Array.isArray(categories)) return;
+
+    // store title + slug
+    searchList = categories.map(c => ({
+      title: c.title,
+      slug: c.slug
+    }));
+  }
+
+  function autoFill(input, list) {
+    let q = input.value.toLowerCase().trim();
+    list.innerHTML = "";
+
+    if (!q) return (list.style.display = "none");
+
+    // Priority 1 → titles STARTING with query
+    let startsWith = searchList.filter(item =>
+      item.title.toLowerCase().startsWith(q)
+    );
+
+    // Priority 2 → titles containing query
+    let contains = searchList.filter(item =>
+      !item.title.toLowerCase().startsWith(q) &&
+      item.title.toLowerCase().includes(q)
+    );
+
+    // Merge in correct display order
+    let results = [...startsWith, ...contains];
+
+    results.forEach(item => {
+      let li = document.createElement("li");
+      li.textContent = item.title;
+
+      li.onclick = () => {
+        window.location.href = `/brand/${item.slug}`;
+      };
+
+      list.appendChild(li);
+    });
+
+    list.style.display = results.length ? "block" : "none";
+  }
+  // CLOSE SUGGESTIONS WHEN CLICK OUTSIDE
+document.addEventListener("click", function (e) {
+
+  // Desktop
+  if (!desktopSearch.contains(e.target) &&
+      !desktopSuggestions.contains(e.target)) {
+    desktopSuggestions.style.display = "none";
+  }
+
+  // Mobile
+  if (!mobileSearchInput.contains(e.target) &&
+      !mobileSuggestions.contains(e.target)) {
+    mobileSuggestions.style.display = "none";
+  }
+
+});
+
+
+  // Desktop Search
+  document.getElementById("desktopSearch").oninput =
+    () => autoFill(desktopSearch, desktopSuggestions);
+
+  // Mobile Search
+  document.getElementById("mobileSearchInput").oninput =
+    () => autoFill(mobileSearchInput, mobileSuggestions);
+
+
+  /* ---------------- HERO SLIDER ---------------- */
+  new Swiper(".heroSwiper", {
+    loop: true,
+    autoplay: { delay: 3000 },
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    }
+  });
+
+  /* ---------------- INITIAL LOAD ---------------- */
+  loadBrands();
+  loadSearchData();
+
+</script>
+
+
+  <script>
+  let coupons = [];
+  let categoriesGrouped = [];
+  let visibleCount = 3; 
+
+  /* LOAD COUPONS */
+  async function loadCouponsHome() {
+    let res = await fetch("/api/coupons");
+    coupons = await res.json();
+    groupCategories();
+    renderCategoryBlocks();
+  }
+
+  /* GROUP COUPONS BY CATEGORY */
+  function groupCategories() {
+    const map = {};
+
+    coupons.forEach(c => {
+      if (!c.category) return;
+
+      const slug = c.category.slug;
+
+      if (!map[slug]) {
+        map[slug] = {
+          title: c.category.title,
+          slug: slug,
+          coupons: []
+        };
+      }
+
+      map[slug].coupons.push(c);
+    });
+
+    categoriesGrouped = Object.values(map);
+  }
+
+  /* RENDER 5 COUPONS + VIEW MORE */
+  function renderCategoryBlocks() {
+    const wrapper = document.getElementById("couponCategoryWrapper");
+    wrapper.innerHTML = "";
+
+    // Show only limited category blocks
+    categoriesGrouped.slice(0, visibleCount).forEach(cat => {
+      wrapper.innerHTML += createCategoryBlock(cat);
+    });
+
+    // Add "Show More" button
+    addShowMoreButton();
+
+    // Re-init swiper
+    initCouponSwipers();
+  }
+
+  function addShowMoreButton() {
+    const wrapper = document.getElementById("couponCategoryWrapper");
+
+    // Remove old button if exists
+    const oldBtn = document.getElementById("showMoreCategoriesBtn");
+    if (oldBtn) oldBtn.remove();
+
+    // If all categories are already visible → don't show button
+    if (visibleCount >= categoriesGrouped.length) return;
+
+    // Create button
+    const btn = document.createElement("button");
+    btn.id = "showMoreCategoriesBtn";
+    btn.innerText = "Show More Coupons";
+    btn.style.cssText = `
+      display:block;
+      margin:20px auto;
+      padding:12px 35px;
+      border-radius:30px;
+      font-weight:700;
+      border:none;
+      background:linear-gradient(45deg,#3498db,#1abcbc);
+      color:white;
+      cursor:pointer;
+      font-size:16px;
+    `;
+
+    btn.onclick = () => {
+      visibleCount += 3;     // show 3 more categories
+      renderCategoryBlocks(); // re-render UI
+    };
+
+    wrapper.appendChild(btn);
+  }
+
+  function createCategoryBlock(cat) {
+    const list = cat.coupons.slice(0, 5); // First 5 coupons only
+    const slugURL = `/brand/${cat.slug}`;
+
+    let cards = "";
+
+    list.forEach(c => {
+      let discount = c.title.replace(/[^\d%]/g, "") || "10%";
+
+      cards += `
+        <div class="swiper-slide">
+    <div class="coupon-card-mini" onclick='openCouponModal(${JSON.stringify(c).replace(/"/g, "&quot;")})'>
+      <div class="discount">${discount} OFF</div>
+      <div class="title">${c.title}</div>
+      <div class="description">${c.description || ''}</div>
+    </div>
+  </div>
+      `;
+    });
+
+    // 6th mandatory "View More" card
+    cards += `
+      <div class="swiper-slide">
+        <div class="coupon-view-more" onclick="window.location.href='${slugURL}'">
+          <i class="fa-solid fa-arrow-right"></i>
+          <p>View More</p>
+        </div>
+      </div>
+    `;
+
+    return `
+      <div class="category-section">
+        <div class="category-title">${cat.title}</div>
+
+        <div class="swiper couponSwiper">
+          <div class="swiper-wrapper">
+            ${cards}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* INIT SWIPER */
+  function initCouponSwipers() {
+    setTimeout(() => {
+      new Swiper(".couponSwiper", {
+        slidesPerView: 2.2,
+        spaceBetween: 15,
+        breakpoints: {
+          576: { slidesPerView: 3 },
+          768: { slidesPerView: 4 },
+          992: { slidesPerView: 5 }
+        }
+      });
+    }, 300);
+  }
+
+  /* MODAL FUNCTIONALITY (SAME AS YOUR BRAND PAGE) */
+  function openCouponModal(coupon) {
+    document.getElementById("modalTitle").innerText = coupon.title;
+    document.getElementById("modalDesc").innerText = coupon.description || "No description";
+    document.getElementById("modalCategory").innerText = coupon.category?.title || "";
+
+    document.getElementById("modalBtn").onclick = () => {
+      navigator.clipboard.writeText(coupon.code);
+      closeModal();
+      showCountdownToast(8, coupon.url);
+    };
+
+    document.getElementById("couponModal").style.display = "flex";
+  }
+
+  function closeModal() {
+    document.getElementById("couponModal").style.display = "none";
+  }
+
+  /* TOAST */
+  function showCountdownToast(seconds, url) {
+    const t = document.getElementById("toastMsg");
+    let remaining = seconds;
+
+    t.style.display = "block";
+    t.innerText = `Code copied! Redirecting in ${remaining}s...`;
+
+    const interval = setInterval(() => {
+      remaining--;
+      t.innerText = `Code copied! Redirecting in ${remaining}s...`;
+
+      if (remaining <= 0) {
+        clearInterval(interval);
+        t.style.display = "none";
+        window.location.href = url;
+
+      }
+    }, 1000);
+  }
+
+  loadCouponsHome();
+  </script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+  </html>

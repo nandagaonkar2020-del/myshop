@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brands</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Swiper (Used only for Hero Slider) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+     :root {
+        --blue: #3498db;
+        --teal: #1abcbc;
+        --white: #ffffff;
+      }
+
+      body {
+        padding-top: 80px;
+        background: #f7f7f7;
+      }
+
+      /* Navbar */
+      nav.navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 9999;
+      }
+
+      @media (max-width: 991px) {
+        nav.navbar {
+          background: linear-gradient(90deg, var(--blue), var(--teal)) !important;
+        }
+      }
+
+      .navbar-nav .nav-link {
+        font-weight: 600;
+        color: #222;
+        transition: 0.25s;
+      }
+
+      .navbar-nav .nav-link.active {
+        color: var(--teal) !important;
+        position: relative;
+        font-weight: 600;
+      }
+
+      .navbar-nav .nav-link.active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -3px;
+        height: 2px;
+        background: var(--teal);
+        border-radius: 2px;
+      }
+
+      /* Desktop Search */
+      @media (min-width: 992px) {
+        .search-wrapper {
+          flex-grow: 1;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+      }
+
+      .search-wrapper .form-control {
+        border-radius: 50px 0 0 50px;
+        border: 2px solid var(--teal);
+        height: 46px;
+      }
+
+      .search-wrapper .btn-dark {
+        border-radius: 0 50px 50px 0;
+        background: linear-gradient(45deg, var(--blue), var(--teal));
+        border: none;
+        width: 60px;
+      }
+
+      /* Mobile Search Box */
+      #mobileSearchBox {
+        display: none;
+        background: #fff;
+        padding: 12px;
+        width: 100%;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+        border-bottom: 3px solid var(--teal);
+        position: fixed;
+        top: 60px;
+        left: 0;
+        z-index: 99999;
+      }
+
+      /* Autocomplete */
+      .autocomplete-box {
+        position: absolute;
+        width: 100%;
+        background: #fff;
+        max-height: 230px;
+        overflow-y: auto;
+        border-radius: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        display: none;
+        z-index: 99999;
+      }
+
+      .autocomplete-box li {
+        padding: 10px 15px;
+        cursor: pointer;
+        list-style: none;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .autocomplete-box li:hover {
+        background: #eef9ff;
+      }
+
+      /* Hamburger */
+      .custom-toggler span {
+        width: 26px;
+        height: 3px;
+        background: white;
+        display: block;
+        margin: 5px 0;
+        border-radius: 6px;
+        transition: 0.3s;
+      }
+
+    /* Hero Slider */
+    .heroSwiper {
+      width: 50%;
+      height: 250px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Brand Card */
+    .brand-card-new {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--blue);
+      text-align: center;
+      padding-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: 0.25s;
+      cursor: pointer;
+    }
+
+    .brand-card-new img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    .brand-card-new:hover {
+      transform: translateY(-4px);
+    }
+
+    .brand-title {
+      font-weight: 600;
+      font-size: 15px;
+      padding-top: 8px;
+      color: #333;
+    }
+
+    .row>* {
+    
+    padding-right: calc(var(--bs-gutter-x) * 0.2);
+    padding-left: calc(var(--bs-gutter-x) * 0.2);
+   
+}
+
+  @media (max-width: 991px) {
+      nav.navbar {
+        background: linear-gradient(90deg, var(--blue), var(--teal)) !important;
+      }
+      .heroSwiper {
+      width: 95%;
+      }
+    }
+    
+
+    
+      .footer {
+        background:linear-gradient(to right , #3498db4d,#8ed2ffcc), url("./images/image.png") no-repeat top;
+  /* background: ; */
+  color: #555;
+}
+
+.footer-logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.footer-desc {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #555;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #000;
+  letter-spacing: 1px;
+}
+
+/* social icons */
+.social-icons a {
+  margin-right: 12px;
+  font-size: 20px;
+  color: #555;
+  transition: 0.3s;
+}
+
+.social-icons a:hover {
+  color: #3498db;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .footer-logo {
+    text-align: center;
+  }
+
+  .social-icons {
+    text-align: center;
+  }
+}
+  </style>
+
+</head>
+
+<body>
+
+   <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm px-3">
+      <div class="container-fluid">
+
+        <button class="navbar-toggler custom-toggler d-lg-none" id="hamburgerBtn" type="button" data-bs-toggle="collapse"
+          data-bs-target="#mainNav">
+          <span></span><span></span><span></span>
+        </button>
+
+        <a href="index.html" class="navbar-brand fw-bold ms-2 text-dark">MyShop</a>
+
+        <!-- Mobile Search Icon -->
+        <button class="btn d-lg-none ms-auto" onclick="openMobileSearch()">
+          <i class="fa fa-search text-white"></i>
+        </button>
+
+        <!-- NAV -->
+        <div class="collapse navbar-collapse" id="mainNav">
+
+          <!-- Desktop Search -->
+          <div class="search-wrapper d-none d-lg-block position-relative">
+            <div class="input-group">
+              <input type="text" id="desktopSearch" class="form-control" placeholder="Search...">
+              <button class="btn btn-dark"><i class="fa fa-search"></i></button>
+            </div>
+            <ul class="autocomplete-box" id="desktopSuggestions"></ul>
+          </div>
+
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a href="./index.html" class="nav-link mx-2">Home</a></li>
+            <li class="nav-item"><a href="./brands.html" class="nav-link active mx-2">Brands</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- MOBILE SEARCH -->
+    <div id="mobileSearchBox">
+      <div class="d-flex">
+        <input type="text" id="mobileSearchInput" class="form-control" placeholder="Search...">
+        <button class="btn btn-danger ms-2" onclick="closeMobileSearch()"><i class="fa fa-times"></i></button>
+      </div>
+      <ul class="autocomplete-box" id="mobileSuggestions"></ul>
+    </div>
+
+  <!-- HERO SLIDER -->
+   <div class="d-flex justify-content-center gap-3">
+  <div class="swiper m-0 heroSwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide hero-slide"><img src="./images/banner-image3.jpg"></div>
+      <div class="swiper-slide hero-slide"><img src="./images/banner-image3.jpg"></div>
+      <div class="swiper-slide hero-slide"><img src="./images/banner-image3.jpg"></div>
+    </div>
+  </div>
+  <div class="d-none d-lg-block"><img src="./images/banner-image3.jpg" alt="" class="img-fluid " style="width: 400px; height: 250px;border-radius: 12px;"></div>
+  </div>
+  <!-- BRANDS SECTION (NO SLIDER) -->
+  <section class="my-5 px-3">
+      <div class="container">
+    <h3 class="fw-bold mb-3">All Brands</h3>
+
+    <div class="row p g-5" id="brandGrid"></div></div>
+  </section>
+
+
+  
+  <footer class="footer py-5">
+  <div class="container">
+    <div class="row gy-4">
+
+      <!-- Logo + Description -->
+      <div class="col-lg-4 ">
+        <h4 class="footer-logo">MyShop</h4>
+        <p class="footer-desc">
+          MyShop helps shoppers to save time and money in their day-to-day shopping.
+        </p>
+
+        <div class="social-icons mt-3">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <!-- Company -->
+      <div class="col-lg-2">
+        <h5 class="footer-title">Company</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Disclosure Policy</a></li>
+          <li><a href="#">Terms of use</a></li>
+        </ul>
+      </div>
+
+      <!-- General -->
+      <div class="col-lg-2">
+        <h5 class="footer-title">General</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="brands.html">Brands</a></li>
+          <!-- <li><a href="#">Categories</a></li> -->
+        </ul>
+      </div>
+
+      <!-- Popular Stores -->
+      <div class="col-lg-2">
+        <h5 class="footer-title">Popular Stores</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="https://www.amazon.in/">Amazon</a></li>
+          <li><a href="https://www.flipkart.com/">Flipkart</a></li>
+          <li><a href="https://www.myntra.com/">Myntra</a></li>
+          
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+  <!-- Swiper JS (Hero Only) -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <script>
+    /* ---------------- LOAD ALL BRANDS ---------------- */
+    async function loadBrands() {
+      let res = await fetch("/api/categories");
+      let categories = await res.json();
+
+      const container = document.getElementById("brandGrid");
+      container.innerHTML = "";
+
+      categories.forEach(cat => {
+        container.innerHTML += `
+          <div class="col-6 col-md-4 col-lg-3 col-xl-3">
+            <div class="brand-card-new" onclick="openBrand('${cat.slug}')">
+              <img src="${cat.imagePath}">
+              <div class="brand-title">${cat.title}</div>
+            </div>
+          </div>`;
+      });
+    }
+
+    function openBrand(slug) {
+      window.location.href = "/brand/" + slug;
+    }
+
+    /* ---------------- SEARCH ---------------- */
+   
+  /* ---------------- MOBILE SEARCH ---------------- */
+  const mobileBox = document.getElementById("mobileSearchBox");
+  const mobileInput = document.getElementById("mobileSearchInput");
+  const mobileList = document.getElementById("mobileSuggestions");
+
+  function openMobileSearch() {
+    mobileBox.style.display = "block";
+    mobileInput.focus();
+  }
+
+  function closeMobileSearch() {
+    mobileBox.style.display = "none";
+    mobileInput.value = "";
+    mobileList.style.display = "none";
+  }
+  
+  let searchList = []; // [{title:"Ajio", slug:"ajio"}, ...]
+
+  async function loadSearchData() {
+    let catReq = await fetch("/api/categories");
+    let categories = await catReq.json();
+    if (!Array.isArray(categories)) return;
+
+    // store title + slug
+    searchList = categories.map(c => ({
+      title: c.title,
+      slug: c.slug
+    }));
+  }
+
+  function autoFill(input, list) {
+    let q = input.value.toLowerCase().trim();
+    list.innerHTML = "";
+
+    if (!q) return (list.style.display = "none");
+
+    // Priority 1 → titles STARTING with query
+    let startsWith = searchList.filter(item =>
+      item.title.toLowerCase().startsWith(q)
+    );
+
+    // Priority 2 → titles containing query
+    let contains = searchList.filter(item =>
+      !item.title.toLowerCase().startsWith(q) &&
+      item.title.toLowerCase().includes(q)
+    );
+
+    // Merge in correct display order
+    let results = [...startsWith, ...contains];
+
+    results.forEach(item => {
+      let li = document.createElement("li");
+      li.textContent = item.title;
+
+      li.onclick = () => {
+        window.location.href = `/brand/${item.slug}`;
+      };
+
+      list.appendChild(li);
+    });
+
+    list.style.display = results.length ? "block" : "none";
+  }
+  // CLOSE SUGGESTIONS WHEN CLICK OUTSIDE
+document.addEventListener("click", function (e) {
+
+  // Desktop
+  if (!desktopSearch.contains(e.target) &&
+      !desktopSuggestions.contains(e.target)) {
+    desktopSuggestions.style.display = "none";
+  }
+
+  // Mobile
+  if (!mobileSearchInput.contains(e.target) &&
+      !mobileSuggestions.contains(e.target)) {
+    mobileSuggestions.style.display = "none";
+  }
+
+});
+
+
+  // Desktop Search
+  document.getElementById("desktopSearch").oninput =
+    () => autoFill(desktopSearch, desktopSuggestions);
+
+  // Mobile Search
+  document.getElementById("mobileSearchInput").oninput =
+    () => autoFill(mobileSearchInput, mobileSuggestions);
+
+
+    /* ---------------- HERO SLIDER ---------------- */
+    new Swiper(".heroSwiper", {
+      loop: true,
+      autoplay: { delay: 3000 },
+     
+     
+    });
+
+    loadBrands();
+    loadSearchData();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

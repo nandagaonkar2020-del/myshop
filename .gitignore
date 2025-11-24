@@ -1,0 +1,59 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+log.txt
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+*.lcov
+
+# Build outputs
+dist/
+build/
+.cache/
+.next/
+out/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.bak
+
+# Frontend dependencies (if you have a client folder)
+client/node_modules/
+client/build/
+client/dist/
+
+# Serverless build cache (if using Vercel/Netlify)
+.vercel/
+.netlify/
+
+# Misc
+*.tgz
+*.zip

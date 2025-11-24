@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      html, body {
+        height: 100%;
+      }
+      #app {
+        min-height: 100vh;
+      }
+
+      /* ---------------- SIDEBAR ---------------- */
+      .sidebar {
+        width: 220px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      /* ---------------- MAIN AREA ---------------- */
+      .main {
+        background: #f8f9fb;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Dropzone */
+      .dropzone {
+        border: 2px dashed #ced4da;
+        padding: 16px;
+        text-align: center;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #fff;
+      }
+      .thumb {
+        max-height: 80px;
+        border-radius: 6px;
+      }
+
+      /* Sections */
+      .section {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      .nav-link.active {
+        font-weight: 600;
+      }
+
+      .small {
+        font-size: 0.9rem;
+      }
+
+      /* ---------- DELETE BUTTON FIX ---------- */
+      .delete-btn {
+        cursor: pointer;
+        color: #dc3545;
+        font-weight: bold;
+        margin-left: 10px;
+        transition: 0.2s;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+
+      .delete-btn:hover {
+        color: #b51324;
+      }
+
+      /* Wrapping container for action buttons */
+      .action-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 5px;
+      }
+
+      /* ---------------- MOBILE FIXES ---------------- */
+      @media (max-width: 768px) {
+        #app {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          align-items: center;
+          overflow-x: auto;
+          white-space: nowrap;
+          padding: 10px;
+        }
+
+        .sidebar h5 {
+          display: none;
+        }
+
+        .sidebar ul {
+          flex-direction: row !important;
+          padding: 0;
+          margin: 0;
+        }
+
+        .sidebar .nav-link {
+          padding: 10px 15px;
+          font-size: 0.95rem;
+        }
+
+        /* Hide desktop logout on mobile */
+        .sidebar #logoutBtn {
+          display: none !important;
+        }
+
+        .main {
+          margin-top: 10px;
+        }
+
+        .section {
+          padding: 15px;
+        }
+
+        img.thumb {
+          max-height: 70px;
+        }
+
+        /* ---- Make delete button always visible ---- */
+        .action-buttons {
+          overflow-x: auto !important;
+          gap: 12px;
+        }
+
+        .delete-btn {
+          margin-left: 0;
+        }
+      }
+      .coupon-description {
+  font-size: 14px;
+  color: #555;
+  max-height: 40px;
+  overflow: hidden;
+  line-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical;
+}
+
+    </style>
+  </head>
+
+  <body>
+    <div class="d-flex flex-column flex-md-row" id="app">
+      
+      <!-- Sidebar -->
+      <nav class="sidebar bg-light p-3">
+        <h5 class="mb-3 d-none d-md-block">Admin Panel</h5>
+
+        <ul class="nav flex-md-column flex-row">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" data-section="categories">Categories</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="coupons">Coupons</a>
+          </li>
+        </ul>
+
+        <div class="mt-auto d-none d-md-block">
+          <button id="logoutBtn" class="btn btn-outline-secondary btn-sm w-100">
+            Logout
+          </button>
+        </div>
+      </nav>
+
+      <!-- Main area -->
+      <div class="main flex-grow-1">
+        <header class="p-3 border-bottom d-flex justify-content-between align-items-center">
+          <h4 id="pageTitle" class="mb-0">Categories</h4>
+
+          <div class="d-flex align-items-center gap-2">
+            <div class="small text-muted">
+              Signed in as <span id="adminEmail"></span>
+            </div>
+
+            <!-- MOBILE LOGOUT -->
+            <button
+              id="logoutBtnMobile"
+              class="btn btn-outline-secondary btn-sm d-md-none"
+            >
+              Logout
+            </button>
+          </div>
+        </header>
+
+        <div class="p-4">
+
+          <!-- Categories Section -->
+          <div id="section-categories" class="section">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <h5>Add / Edit Category</h5>
+                <div id="catAlert"></div>
+
+                <div class="mb-2">
+                  <div id="drop" class="dropzone">Tap or drop image here</div>
+                  <input id="fileInput" type="file" accept=".png,.jpg,.jpeg,.webp" class="d-none" />
+                  <div class="mt-2">
+                    <img id="preview" src="" class="thumb d-none" />
+                  </div>
+                </div>
+
+                <div class="mb-2">
+                  <input id="catTitle" class="form-control" placeholder="Category title" />
+                </div>
+
+                <input type="hidden" id="editingCatId" />
+
+                <button id="saveCat" class="btn btn-primary">Save</button>
+                <button id="cancelCatEdit" class="btn btn-outline-secondary ms-2 d-none">
+                  Cancel
+                </button>
+              </div>
+
+              <div class="col-md-6">
+                <h5>Saved Categories</h5>
+                <div id="catsList"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coupons Section -->
+          <div id="section-coupons" class="section d-none">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <h5>Add / Edit Coupon</h5>
+                <div id="couponAlert"></div>
+
+                <div class="mb-2">
+                  <input id="couponTitle" class="form-control" placeholder="Title" />
+                </div>
+
+                <div class="mb-2">
+                  <textarea id="couponDesc" class="form-control" rows="2" placeholder="Description"></textarea>
+                </div>
+
+                <div class="mb-2">
+                  <input id="couponCode" class="form-control" placeholder="Code" />
+                </div>
+
+                <div class="mb-2">
+                  <input id="couponUrl" class="form-control" placeholder="URL" />
+                </div>
+
+                <div class="mb-2">
+                  <select id="couponCat" class="form-select">
+                    <option value="">-- Select category --</option>
+                  </select>
+                </div>
+
+                <input type="hidden" id="editingCouponId" />
+
+                <button id="saveCoupon" class="btn btn-success">Save</button>
+                <button id="cancelCouponEdit" class="btn btn-outline-secondary ms-2 d-none">
+                  Cancel
+                </button>
+              </div>
+
+              <div class="col-md-6">
+                <h5>Saved Coupons</h5>
+                <div id="couponsList"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      // Mobile logout triggers main logout
+      document.addEventListener("DOMContentLoaded", () => {
+        const mobileBtn = document.getElementById("logoutBtnMobile");
+        const mainBtn = document.getElementById("logoutBtn");
+
+        if (mobileBtn) {
+          mobileBtn.addEventListener("click", () => {
+            if (mainBtn) mainBtn.click();
+          });
+        }
+      });
+    </script>
+
+    <script src="/app.js"></script>
+
+  </body>
+</html>
