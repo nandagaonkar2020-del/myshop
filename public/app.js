@@ -61,18 +61,45 @@ function initCategories() {
   const drop = document.getElementById('drop');
   const fileInput = document.getElementById('fileInput');
   const preview = document.getElementById('preview');
-  let uploadedImagePath = '';
+  const logoUploadStatus = document.getElementById('logoUploadStatus');
+  
+  const bannerDrop = document.getElementById('bannerDrop');
+  const bannerFileInput = document.getElementById('bannerFileInput');
+  const bannerPreview = document.getElementById('bannerPreview');
+  const bannerUploadStatus = document.getElementById('bannerUploadStatus');
+  
+  let uploadedLogoPath = '';
+  let uploadedBannerPath = '';
 
+  // Logo dropzone events
   drop.addEventListener('click', () => fileInput.click());
-  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('border-primary'); });
-  drop.addEventListener('dragleave', () => drop.classList.remove('border-primary'));
+  drop.addEventListener('dragover', e => { 
+    e.preventDefault(); 
+    drop.classList.add('active');
+  });
+  drop.addEventListener('dragleave', () => drop.classList.remove('active'));
   drop.addEventListener('drop', async e => {
     e.preventDefault();
-    drop.classList.remove('border-primary');
-    handleFile(e.dataTransfer.files[0]);
+    drop.classList.remove('active');
+    handleFile(e.dataTransfer.files[0], 'logo');
   });
 
-  fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+  fileInput.addEventListener('change', e => handleFile(e.target.files[0], 'logo'));
+
+  // Banner dropzone events
+  bannerDrop.addEventListener('click', () => bannerFileInput.click());
+  bannerDrop.addEventListener('dragover', e => { 
+    e.preventDefault(); 
+    bannerDrop.classList.add('active');
+  });
+  bannerDrop.addEventListener('dragleave', () => bannerDrop.classList.remove('active'));
+  bannerDrop.addEventListener('drop', async e => {
+    e.preventDefault();
+    bannerDrop.classList.remove('active');
+    handleFile(e.dataTransfer.files[0], 'banner');
+  });
+
+  bannerFileInput.addEventListener('change', e => handleFile(e.target.files[0], 'banner'));
 
   function catAlert(msg, type = 'danger') {
     document.getElementById('catAlert').innerHTML =
@@ -80,29 +107,65 @@ function initCategories() {
     setTimeout(() => document.getElementById('catAlert').innerHTML = '', 3000);
   }
 
-  async function handleFile(file) {
+  function updateUploadStatus(type, message, statusClass = '') {
+    const statusElement = type === 'logo' ? logoUploadStatus : bannerUploadStatus;
+    statusElement.textContent = message;
+    statusElement.className = `upload-status ${statusClass}`;
+  }
+
+  async function handleFile(file, type) {
     if (!file) return;
 
     const allowed = ['image/png', 'image/jpeg', 'image/webp'];
-    if (!allowed.includes(file.type)) return catAlert('Only PNG, JPG, WEBP allowed');
-    if (file.size > 3 * 1024 * 1024) return catAlert('Max size 3MB');
+    if (!allowed.includes(file.type)) {
+      catAlert('Only PNG, JPG, WEBP allowed');
+      return;
+    }
+    if (file.size > 3 * 1024 * 1024) {
+      catAlert('Max size 3MB');
+      return;
+    }
 
-    preview.src = URL.createObjectURL(file);
-    preview.classList.remove('d-none');
+    const previewElement = type === 'logo' ? preview : bannerPreview;
+    const dropElement = type === 'logo' ? drop : bannerDrop;
+
+    // Show preview
+    previewElement.src = URL.createObjectURL(file);
+    previewElement.classList.remove('d-none');
+    dropElement.textContent = 'Image selected';
+    dropElement.classList.add('active');
+
+    updateUploadStatus(type, 'Uploading...', 'uploading');
 
     const fd = new FormData();
     fd.append('image', file);
 
     try {
-      const res = await authFetch(API + '/upload/image', { method: 'POST', body: fd });
+      const res = await authFetch(API + '/upload/image', { 
+        method: 'POST', 
+        body: fd 
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ message: 'Upload failed' }));
+        throw new Error(errorData.message || `Upload failed with status ${res.status}`);
+      }
+
       const data = await res.json();
-      if (!res.ok) return catAlert(data.message || 'Upload failed');
+      
+      if (type === 'logo') {
+        uploadedLogoPath = data.path;
+      } else {
+        uploadedBannerPath = data.path;
+      }
 
-      uploadedImagePath = data.path;
-      catAlert('Image uploaded', 'success');
+      updateUploadStatus(type, 'Upload successful!', 'success');
+      catAlert(`${type === 'logo' ? 'Logo' : 'Banner'} uploaded successfully`, 'success');
 
-    } catch {
-      catAlert('Network error');
+    } catch (error) {
+      console.error('Upload error:', error);
+      updateUploadStatus(type, `Upload failed: ${error.message}`, 'error');
+      catAlert(`Upload failed: ${error.message}`);
     }
   }
 
@@ -112,10 +175,20 @@ function initCategories() {
     const editingId = document.getElementById('editingCatId').value;
 
     if (!title) return catAlert('Enter title');
-    if (!uploadedImagePath && !editingId) return catAlert('Upload image first');
+    
+    // For new categories, both images are required
+    if (!editingId && (!uploadedLogoPath || !uploadedBannerPath)) {
+      return catAlert('Both logo and banner images are required for new categories');
+    }
 
     const body = { title };
-    if (uploadedImagePath) body.imagePath = uploadedImagePath;
+    
+    // Only include image paths if new images were uploaded
+    if (uploadedLogoPath) body.imagePath = uploadedLogoPath;
+    if (uploadedBannerPath) body.bannerImagePath = uploadedBannerPath;
+
+    // If editing but no new images uploaded, we need to ensure existing images are preserved
+    // The backend will handle this since we're not sending image paths if they're empty
 
     try {
       let res;
@@ -141,8 +214,9 @@ function initCategories() {
       resetCatForm();
       loadCategories();
 
-    } catch {
-      catAlert('Network error');
+    } catch (error) {
+      console.error('Save error:', error);
+      catAlert('Network error: ' + error.message);
     }
   });
 
@@ -151,7 +225,15 @@ function initCategories() {
     document.getElementById('editingCatId').value = '';
     document.getElementById('cancelCatEdit').classList.add('d-none');
     preview.classList.add('d-none');
-    uploadedImagePath = '';
+    bannerPreview.classList.add('d-none');
+    drop.textContent = 'Tap or drop logo here';
+    bannerDrop.textContent = 'Tap or drop banner here';
+    drop.classList.remove('active');
+    bannerDrop.classList.remove('active');
+    logoUploadStatus.textContent = '';
+    bannerUploadStatus.textContent = '';
+    uploadedLogoPath = '';
+    uploadedBannerPath = '';
   }
 
   document.getElementById('cancelCatEdit').addEventListener('click', resetCatForm);
@@ -161,7 +243,7 @@ function initCategories() {
   async function loadCategories() {
     try {
       const res = await authFetch(API + '/categories');
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error('Failed to load categories');
       const list = await res.json();
 
       const container = document.getElementById('catsList');
@@ -174,9 +256,17 @@ function initCategories() {
         div.innerHTML = `
           <div class="d-flex justify-content-between align-items-start">
             <div class="d-flex align-items-center">
-              <img src="${c.imagePath}" class="thumb me-2">
+              <div class="me-3">
+                <img src="${c.imagePath}" class="thumb me-2" alt="Logo">
+                <div class="small text-center mt-1">Logo</div>
+              </div>
+              <div class="me-3">
+                <img src="${c.bannerImagePath}" class="thumb me-2" alt="Banner">
+                <div class="small text-center mt-1">Banner</div>
+              </div>
               <div>
                 <strong>${c.title}</strong><br>
+                <small class="text-muted">${c.slug}</small><br>
                 <small>${new Date(c.createdAt).toLocaleString()}</small>
               </div>
             </div>
@@ -209,9 +299,10 @@ function initCategories() {
       sel.innerHTML = `<option value="">-- Select category --</option>` +
         list.map(c => `<option value="${c._id}">${c.title}</option>`).join('');
 
-    } catch {
+    } catch (error) {
+      console.error('Load categories error:', error);
       document.getElementById('catsList').innerHTML =
-        `<div class="text-danger">Failed to load</div>`;
+        `<div class="text-danger">Failed to load categories: ${error.message}</div>`;
     }
   }
 
@@ -222,11 +313,14 @@ function initCategories() {
 
     try {
       const res = await authFetch(API + '/categories/' + id, { method: "DELETE" });
-      if (!res.ok) return alert("Delete failed");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ message: 'Delete failed' }));
+        throw new Error(errorData.message);
+      }
 
       loadCategories();
-    } catch {
-      alert("Network error");
+    } catch (error) {
+      alert("Delete failed: " + error.message);
     }
   }
 
@@ -235,6 +329,8 @@ function initCategories() {
   window.editCategory = async function (id) {
     try {
       const res = await authFetch(API + '/categories');
+      if (!res.ok) throw new Error('Failed to load categories');
+      
       const list = await res.json();
       const cat = list.find(x => x._id === id);
       if (!cat) return alert("Category not found");
@@ -243,12 +339,23 @@ function initCategories() {
       document.getElementById('editingCatId').value = cat._id;
       document.getElementById('cancelCatEdit').classList.remove('d-none');
 
+      // Set previews for existing images
       preview.src = cat.imagePath;
       preview.classList.remove('d-none');
-      uploadedImagePath = '';
+      drop.textContent = 'Current logo';
+      drop.classList.add('active');
 
-    } catch {
-      alert("Error loading category");
+      bannerPreview.src = cat.bannerImagePath;
+      bannerPreview.classList.remove('d-none');
+      bannerDrop.textContent = 'Current banner';
+      bannerDrop.classList.add('active');
+
+      // Clear uploaded paths (user can choose to upload new images or keep existing)
+      uploadedLogoPath = '';
+      uploadedBannerPath = '';
+
+    } catch (error) {
+      alert("Error loading category: " + error.message);
     }
   };
 
@@ -307,8 +414,9 @@ function initCoupons() {
       resetCouponForm();
       loadCoupons();
 
-    } catch {
-      alertBox("Network error");
+    } catch (error) {
+      console.error('Save coupon error:', error);
+      alertBox("Network error: " + error.message);
     }
   });
 
@@ -330,7 +438,7 @@ function initCoupons() {
   async function loadCoupons() {
     try {
       const res = await authFetch(API + '/coupons');
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error('Failed to load coupons');
       const list = await res.json();
 
       const container = document.getElementById('couponsList');
@@ -375,9 +483,10 @@ function initCoupons() {
         btn.addEventListener("click", () => loadCoupon(btn.dataset.id));
       });
 
-    } catch {
+    } catch (error) {
+      console.error('Load coupons error:', error);
       document.getElementById('couponsList').innerHTML =
-        `<div class="text-danger">Failed to load</div>`;
+        `<div class="text-danger">Failed to load coupons: ${error.message}</div>`;
     }
   }
 
@@ -388,12 +497,15 @@ function initCoupons() {
 
     try {
       const res = await authFetch(API + '/coupons/' + id, { method: "DELETE" });
-      if (!res.ok) return alert("Delete failed");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ message: 'Delete failed' }));
+        throw new Error(errorData.message);
+      }
 
       loadCoupons();
 
-    } catch {
-      alert("Network error");
+    } catch (error) {
+      alert("Delete failed: " + error.message);
     }
   }
 
@@ -402,6 +514,8 @@ function initCoupons() {
   async function loadCoupon(id) {
     try {
       const res = await authFetch(API + '/coupons');
+      if (!res.ok) throw new Error('Failed to load coupons');
+      
       const list = await res.json();
       const c = list.find(x => x._id === id);
       if (!c) return alert("Coupon not found");
@@ -414,11 +528,45 @@ function initCoupons() {
       document.getElementById('editingCouponId').value = id;
       document.getElementById('cancelCouponEdit').classList.remove("d-none");
 
-    } catch {
-      alert("Error loading coupon");
+    } catch (error) {
+      alert("Error loading coupon: " + error.message);
     }
   }
 
   loadCoupons();
 }
 
+
+// Add this function to debug image loading
+async function debugImageLoading() {
+  console.log('=== DEBUG IMAGE LOADING ===');
+  
+  // Test if we can load categories and see image paths
+  try {
+    const res = await authFetch(API + '/categories');
+    const categories = await res.json();
+    
+    console.log('Categories loaded:', categories.length);
+    categories.forEach(cat => {
+      console.log(`Category: ${cat.title}`);
+      console.log(`  Logo: ${cat.imagePath}`);
+      console.log(`  Banner: ${cat.bannerImagePath}`);
+      
+      // Test if images are accessible
+      testImageLoad(cat.imagePath, 'Logo');
+      testImageLoad(cat.bannerImagePath, 'Banner');
+    });
+  } catch (error) {
+    console.error('Debug error:', error);
+  }
+}
+
+function testImageLoad(url, type) {
+  const img = new Image();
+  img.onload = () => console.log(`✅ ${type} image loaded: ${url}`);
+  img.onerror = () => console.log(`❌ ${type} image failed: ${url}`);
+  img.src = url;
+}
+
+// Call this in your browser console to test:
+// debugImageLoading();
