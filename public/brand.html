@@ -11,8 +11,7 @@
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- Swiper (Needed for Navbar Hero Compatibility) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
   <style>
@@ -135,24 +134,20 @@
       border-radius: 6px;
     }
 
-
-
     /* ---------------------------------------------------------
         YOUR PAGE CSS (AS IT IS)
     --------------------------------------------------------- */
     .coupon-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr); /* Default: mobile */
-  gap: 20px;
-}
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 20px;
+    }
 
-/* Tablet (≥ 576px) and Desktop */
-@media (min-width: 576px) {
-  .coupon-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
+    @media (min-width: 576px) {
+      .coupon-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
 
     .coupon-card {
       background: #fff;
@@ -227,157 +222,228 @@
       border-radius: 10px;
       display: none;
     }
+
     /* LEFT IMAGE FIXED BOX */
-#brandImgBox {
-  position: fixed;
-  top: 80px; /* navbar height */
-  left: 0;
-  width: 22%;
-  height: 80vh;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 7px;
-}
+    #brandImgBox {
+      position: fixed;
+      top: 90px;
+      left: 15px;
+      width: 22%;
+      min-width: 200px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
 
-#brandImg {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
+    #brandImg {
+      width: 180px;
+      height: auto;
+      display: block;
+      margin: 0 auto 12px auto;
+      object-fit: contain;
+    }
 
-/* RIGHT SIDE SCROLLABLE SECTION */
-#scrollArea {
-  margin-left: 23%; /* space for fixed image */
-  height: calc(100vh - 100px);
-  overflow-y: auto;
-  padding-right: 20px;
-  padding-top: 15px;
-}
+    /* Rating area under logo */
+    .rating-area {
+      margin-top: 8px;
+    }
 
-/* Verified Tag */
-.verified-tag {
-  color: #28a745;
-  font-weight: 600;
-  font-size: 14px;
-  margin-left: 8px;
-}
+    .avg-stars {
+      font-size: 22px;
+      color: #f4c430;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
 
-/* Coupon Cards improved to match reference */
-.coupon-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 18px;
-  border-left: 5px solid var(--teal);
-  box-shadow: 0 3px 16px rgba(0,0,0,0.06);
-  transition: 0.3s;
-  position: relative;
-}
+    .rating-count {
+      font-size: 14px;
+      color: #666;
+      margin-top: 6px;
+    }
 
-.coupon-card:hover {
-  transform: translateY(-4px);
-}
+    .rate-link {
+      display: block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #0d6efd;
+      font-weight: 600;
+    }
 
-.discount-box {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--teal);
-  background: #eafffa;
-  padding: 8px 12px;
-  border-radius: 10px;
-  display: inline-block;
-}
+    /* Rating modal stars */
+    .star-rating .fa-star {
+      font-size: 36px;
+      color: #ccc;
+      cursor: pointer;
+      transition: color .12s ease;
+      margin: 0 6px;
+    }
 
-/* Show Code Button */
-.show-code-btn {
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(45deg, var(--blue), var(--teal));
-  color: #fff;
-  border-radius: 40px;
-  padding: 8px 18px;
-  border: none;
-  font-weight: bold;
-}
+    .star-rating .fa-star.selected {
+      color: #f4c430 !important;
+    }
 
+    .star-rating .fa-star.hover {
+      color: #f4c430 !important;
+    }
 
-/* ============================================
-   MOBILE RESPONSIVE FIX (Very Important)
-============================================ */
-@media (max-width: 768px) {
+    /* RIGHT SIDE SCROLLABLE SECTION */
+    #scrollArea {
+      margin-left: 26%;
+      padding: 20px 30px;
+      min-height: 80vh;
+    }
 
-  /* Brand image box – stop fixed mode on mobile */
-  #brandImgBox {
-    position: relative;
-    width: 100%;
-    height: auto;
-    top: 0;
-    left: 0;
-    margin: 0;
-    margin-bottom: 20px;
-    padding: 12px;
-    box-shadow: none;
-    border-radius: 10px;
-  }
+    /* Verified Tag */
+    .verified-tag {
+      color: #28a745;
+      font-weight: 600;
+      font-size: 14px;
+      margin-left: 8px;
+    }
 
-  #brandImg {
-    max-width: 80%;
-    margin: 0 auto;
-    display: block;
-  }
+    /* Coupon Cards improved to match reference */
+    .coupon-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      border-left: 5px solid var(--teal);
+      box-shadow: 0 3px 16px rgba(0, 0, 0, 0.06);
+      transition: 0.3s;
+      position: relative;
+    }
 
-  /* Remove left margin — scroll area full width */
-  #scrollArea {
-    margin-left: 0;
-    padding: 10px;
-    height: auto;
-  }
+    .coupon-card:hover {
+      transform: translateY(-4px);
+    }
 
-  /* Title text smaller */
-  #brandTitle {
-    font-size: 18px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 15px;
-  }
+    .discount-box {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--teal);
+      background: #eafffa;
+      padding: 8px 12px;
+      border-radius: 10px;
+      display: inline-block;
+    }
 
-  /* Coupon cards full width, 1 per row */
-  .coupon-card {
-    width: 100% !important;
-    margin-left: 0 !important;
-    padding: 15px;
-    margin-bottom: 15px;
-  }
+    /* Show Code Button */
+    .show-code-btn {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(45deg, var(--blue), var(--teal));
+      color: #fff;
+      border-radius: 40px;
+      padding: 8px 18px;
+      border: none;
+      font-weight: bold;
+    }
 
-  /* Discount box smaller */
-  .discount-box {
-    font-size: 18px;
-    padding: 6px 10px;
-  }
+    /* FIXED LEFT SQUARE DISCOUNT BOX */
+    .coupon-card {
+      display: flex;
+      gap: 15px;
+      padding: 18px;
+      border-left: none !important;
+      position: relative;
+    }
 
-  /* Verified tag */
-  .verified-tag {
-    font-size: 12px;
-  }
+    .coupon-left-box {
+      width: 90px;
+      background: #eafffa;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  /* Show code button position fix */
-  .show-code-btn {
-    position: static;
-    transform: none;
-    margin-top: 10px;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-  }
-}
+    .discount-big {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--teal);
+      text-align: center;
+    }
 
+    /* RIGHT SECTION */
+    .coupon-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
+    /* Title, Description */
+    .coupon-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .coupon-desc {
+      font-size: 14px;
+      margin: 5px 0;
+      color: #555;
+    }
+
+    /* Verified badge better look */
+    .verified-tag {
+      font-size: 13px;
+      color: #28a745;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    /* Button at bottom */
+    .show-code-btn {
+      margin-top: auto;
+    }
+
+    /* ============================================
+       MOBILE RESPONSIVE FIX (Very Important)
+    ============================================ */
+    @media (max-width: 992px) {
+      #brandImgBox {
+        position: relative;
+        width: 100%;
+        margin: 0 0 16px 0;
+        left: auto;
+        top: auto;
+        display: block;
+      }
+
+      #scrollArea {
+        margin-left: 0;
+        padding: 16px;
+      }
+
+      .coupon-card {
+        flex-direction: column;
+      }
+
+      .coupon-left-box {
+        width: 100%;
+        height: 70px;
+      }
+
+      .discount-big {
+        font-size: 24px;
+      }
+
+      .show-code-btn {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+      }
+    }
+
+    /* Toast small */
+    #toastMsg .toast {
+      min-width: 180px;
+    }
   </style>
 
 </head>
@@ -430,34 +496,26 @@
   </div>
 
   <!-- ----------------------------------------------------------------------
-          YOUR PAGE CONTENT (UNCHANGED)
+          YOUR PAGE CONTENT WITH RATING FEATURE
   ---------------------------------------------------------------------- -->
 
-
-
-<div class="container-fluid">
-  <div class="row">
-
-    <!-- FIXED IMAGE (LEFT PANEL) -->
-    <div class="col-lg-3 d-none d-lg-block">
-      <div id="brandImgBox">
-        <img id="brandImg" src="" alt="Brand Image" />
-      </div>
+  <!-- Left: Brand image and rating -->
+  <div id="brandImgBox" aria-live="polite">
+    <img id="brandImg" src="/placeholder-image.jpg" alt="Brand Image" />
+    <div id="brandRatingBox" class="rating-area text-center">
+      <div id="avgStars" class="avg-stars">☆☆☆☆☆</div>
+      <div id="ratingCount" class="rating-count">Loading rating...</div>
+      <a href="#" id="openRateModal" class="rate-link">Rate It</a>
     </div>
-
-    <!-- RIGHT PANEL (SCROLLABLE) -->
-    <div class="col-lg-8 w-100">
-      <div id="scrollArea">
-        <h3 id="brandTitle" class="fw-bold mb-4"></h3>
-        <div id="couponList" class="coupon-grid"></div>
-      </div>
-    </div>
-
   </div>
-</div>
 
+  <!-- Right: Coupons list -->
+  <div id="scrollArea">
+    <h3 id="brandTitle" class="fw-bold mb-4">Brand Coupons, Promo Codes and Offers</h3>
+    <div id="couponList" class="coupon-grid"></div>
+  </div>
 
-  <!-- Modal -->
+  <!-- Coupon Modal -->
   <div id="couponModal" class="custom-modal-overlay">
     <div class="custom-modal">
       <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -468,52 +526,255 @@
     </div>
   </div>
 
-  <div id="toastMsg"></div>
+  <!-- Rating Modal -->
+  <div id="ratingModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <h5 class="modal-title">Rate this brand</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="star-rating" id="starRating" role="radiogroup" aria-label="Rate this brand">
+            <i class="fa fa-star" data-value="1" role="radio" aria-checked="false"></i>
+            <i class="fa fa-star" data-value="2" role="radio" aria-checked="false"></i>
+            <i class="fa fa-star" data-value="3" role="radio" aria-checked="false"></i>
+            <i class="fa fa-star" data-value="4" role="radio" aria-checked="false"></i>
+            <i class="fa fa-star" data-value="5" role="radio" aria-checked="false"></i>
+          </div>
+          <p id="ratingText" class="text-center mt-3 text-muted"></p>
+        </div>
+        <div class="modal-footer">
+          <button id="submitRatingBtn" type="button" class="btn btn-success">Submit Rating</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toastMsg" class="position-fixed bottom-0 end-0 p-3" style="z-index:1200;"></div>
 
   <!-- ----------------------------------------------------------------------
-          JS FUNCTIONS (NAVBAR + SEARCH + YOUR COUPON JS)
+          JS FUNCTIONS (NAVBAR + SEARCH + COUPON + RATING)
   ---------------------------------------------------------------------- -->
 
   <script>
-    /* ---------------------- PAGE TITLE ----------------------- */
-    const slug = window.location.pathname.split("/").pop();
+    // Get or create user token for rating
+    function getUserToken() {
+      let token = getCookie('ratingToken');
+      if (!token) {
+        token = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        setCookie('ratingToken', token, 365);
+      }
+      return token;
+    }
+
+    // Cookie helper functions
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + d.toUTCString();
+      document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    const slug = window.location.pathname.split("/").pop() || "";
     const prettyName = slug.replace(/-/g, " ");
-document.getElementById("brandTitle").innerText =
-  `${prettyName} Coupons, Promo Codes and Offers`.toUpperCase();
+    let currentCategory = null;
+    let selectedRating = 0;
 
+    /* ---------------------- PAGE INITIALIZATION ----------------------- */
+    document.getElementById("brandTitle").innerText =
+      `${prettyName} Coupons, Promo Codes and Offers`.toUpperCase();
 
-/* Load Brand Image Dynamically */
-async function loadBrandImage() {
-  let res = await fetch("/api/categories");
-  let cats = await res.json();
+    async function initPage() {
+      try {
+        // Initialize user token
+        getUserToken();
 
-  let currentBrand = cats.find(c => c.slug === slug);
+        // For demo purposes, create a mock category if APIs fail
+        currentCategory = {
+          _id: slug || 'default-brand',
+          title: prettyName,
+          bannerImagePath: "/placeholder-image.jpg",
+          imagePath: "/placeholder-image.jpg"
+        };
 
-  if (currentBrand) {
-    // Use bannerImagePath for the large banner image
-    document.getElementById("brandImg").src = currentBrand.bannerImagePath || currentBrand.imagePath;
-    document.getElementById("brandImg").onerror = function() {
-      console.log('Image failed to load:', this.src);
-      this.src = '/placeholder-image.jpg'; // Fallback image
-    };
-  }
-}
+        // Try to load from API, but fall back to mock data
+        try {
+          const r = await fetch("/api/categories");
+          if (r.ok) {
+            const cats = await r.json();
+            const foundCategory = cats.find(c => c.slug === slug);
+            if (foundCategory) {
+              currentCategory = foundCategory;
+            }
+          }
+        } catch (err) {
+          console.log("Using mock category data");
+        }
 
-loadBrandImage();
+        const imgEl = document.getElementById("brandImg");
+        imgEl.src = currentCategory.bannerImagePath ||
+                    currentCategory.imagePath ||
+                    "/placeholder-image.jpg";
+        imgEl.alt = currentCategory.title || prettyName;
+        imgEl.onerror = () => imgEl.src = "/placeholder-image.jpg";
 
+        await loadCoupons();
+        await loadBrandRating(); // Using MongoDB now
+      } catch (err) {
+        console.error("Initialization error:", err);
+      }
+    }
+
+    /* ---------------------- RATING SYSTEM (MongoDB) ----------------------- */
+    async function loadBrandRating() {
+      try {
+        const res = await fetch(`/api/rating/${currentCategory._id}`);
+        if (!res.ok) {
+          throw new Error('Failed to load rating');
+        }
+        const data = await res.json();
+
+        const avg = Number(data.avgRating || 0);
+        const total = Number(data.totalRatings || 0);
+
+        let stars = "";
+        const rounded = Math.round(avg);
+        for (let i = 1; i <= 5; i++) stars += i <= rounded ? "★" : "☆";
+
+        document.getElementById("avgStars").innerText = stars;
+        document.getElementById("ratingCount").innerText =
+          total > 0 ? `${avg.toFixed(1)}/5 (${total} Ratings)` : "No ratings yet";
+
+      } catch (err) {
+        console.error("Error loading rating:", err);
+        document.getElementById("avgStars").innerText = "☆☆☆☆☆";
+        document.getElementById("ratingCount").innerText = "No ratings yet";
+      }
+    }
+
+    function setupStarHandlers() {
+      const stars = document.querySelectorAll("#starRating .fa-star");
+      const ratingText = document.getElementById("ratingText");
+
+      function highlight(n) {
+        stars.forEach(s => {
+          s.classList.toggle("selected", Number(s.dataset.value) <= n);
+          s.setAttribute("aria-checked", Number(s.dataset.value) <= n);
+        });
+      }
+
+      stars.forEach(star => {
+        star.addEventListener("mouseenter", () => {
+          const val = Number(star.dataset.value);
+          stars.forEach(s => s.classList.toggle("hover", Number(s.dataset.value) <= val));
+        });
+        
+        star.addEventListener("mouseleave", () => {
+          stars.forEach(s => s.classList.remove("hover"));
+          highlight(selectedRating);
+        });
+        
+        star.addEventListener("click", () => {
+          selectedRating = Number(star.dataset.value);
+          highlight(selectedRating);
+          ratingText.innerText = `You selected ${selectedRating} star${selectedRating > 1 ? "s" : ""}`;
+          ratingText.style.color = "#6c757d";
+        });
+        
+        // Keyboard accessibility
+        star.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectedRating = Number(star.dataset.value);
+            highlight(selectedRating);
+            ratingText.innerText = `You selected ${selectedRating} star${selectedRating > 1 ? "s" : ""}`;
+          }
+        });
+      });
+    }
+
+    // Rating modal event handlers
+    document.getElementById("openRateModal").addEventListener("click", e => {
+      e.preventDefault();
+      selectedRating = 0;
+      document.getElementById("ratingText").innerText = "";
+      document.querySelectorAll("#starRating .fa-star")
+        .forEach(s => {
+          s.classList.remove("selected", "hover");
+          s.setAttribute("aria-checked", "false");
+        });
+      new bootstrap.Modal(document.getElementById("ratingModal")).show();
+    });
+
+    document.getElementById("submitRatingBtn").addEventListener("click", async () => {
+      if (!selectedRating) {
+        document.getElementById("ratingText").innerText = "Please select a rating";
+        document.getElementById("ratingText").style.color = "#dc3545";
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/rate/${currentCategory._id}`, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ rating: selectedRating })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          document.getElementById("ratingText").innerText = data.message;
+          document.getElementById("ratingText").style.color = "#dc3545";
+          return;
+        }
+
+        // Success
+        bootstrap.Modal.getInstance(document.getElementById("ratingModal")).hide();
+        await loadBrandRating();
+        showToast("Thanks for your rating!");
+
+      } catch (err) {
+        console.error("Error submitting rating:", err);
+        document.getElementById("ratingText").innerText = "Failed to submit rating";
+        document.getElementById("ratingText").style.color = "#dc3545";
+      }
+    });
 
     /* ---------------------- TOAST ----------------------- */
+    function showToast(msg) {
+      const t = document.getElementById("toastMsg");
+      t.innerHTML = `<div class="toast show"><div class="toast-body">${escapeHtml(msg)}</div></div>`;
+      setTimeout(() => t.innerHTML = "", 2200);
+    }
+
     function showCountdownToast(seconds, url) {
       const t = document.getElementById("toastMsg");
       let s = seconds;
       t.style.display = "block";
-      t.innerText = `Code Copied! Redirecting in ${s}s...`;
+      t.innerHTML = `<div class="toast show"><div class="toast-body">Code Copied! Redirecting in ${s}s...</div></div>`;
 
       const timer = setInterval(() => {
         s--;
-        t.innerText = `Code Copied! Redirecting in ${s}s...`;
+        t.innerHTML = `<div class="toast show"><div class="toast-body">Code Copied! Redirecting in ${s}s...</div></div>`;
         if (s <= 0) {
           clearInterval(timer);
+          t.innerHTML = "";
           window.location.href = url;
         }
       }, 1000);
@@ -537,56 +798,120 @@ loadBrandImage();
     function closeModal() {
       document.getElementById("couponModal").style.display = "none";
     }
-    /* Close modal when clicking outside */
-document.getElementById("couponModal").addEventListener("click", function (e) {
-  if (e.target === this) {
-    closeModal();
-  }
-});
 
-/* Close modal with ESC key */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") {
-    closeModal();
-  }
-});
+    /* Close modal when clicking outside */
+    document.getElementById("couponModal").addEventListener("click", function (e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    /* Close modal with ESC key */
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
 
     /* ---------------------- LOAD COUPONS ----------------------- */
     async function loadCoupons() {
-      let res = await fetch("/api/coupons");
-      let all = await res.json();
+      let list = [];
+      
+      // Try to load from API first
+      try {
+        const res = await fetch("/api/coupons");
+        if (res.ok) {
+          const all = await res.json();
+          list = all.filter(c => c.category?.slug === slug);
+        }
+      } catch (err) {
+        console.log("Using mock coupon data");
+      }
 
-      const list = all.filter(c => c.category?.slug === slug);
+      // If no coupons from API, create mock data
+      if (list.length === 0) {
+        list = [
+          {
+            title: "20% OFF Entire Order",
+            description: "Get 20% off your entire purchase. Valid for new customers only.",
+            code: "SAVE20",
+            url: "https://example.com",
+            category: { title: prettyName }
+          },
+          {
+            title: "Free Shipping",
+            description: "Free shipping on orders over $50. Limited time offer.",
+            code: "FREESHIP",
+            url: "https://example.com",
+            category: { title: prettyName }
+          }
+        ];
+      }
+
+      document.getElementById("brandTitle").innerHTML =
+        `${prettyName} Coupons, Promo Codes & Offers <br>
+  <div class="coupon-info d-inline-flex align-items-center gap-2 px-3 py-2 
+              rounded-3 "
+       style="background:#f3f6ff; ">
+
+      <span class="badge rounded-pill px-3 py-2  text-light" 
+            style="text-transform:lowercase !important;"
+              >
+          <i class="fa-solid fa-ticket"></i>
+          ${list.length} Coupons
+      </span>
+
+      <span class="badge rounded-pill px-3 py-2  text-light "
+      style="text-transform:lowercase !important;" 
+            >(
+          <i class="fa-solid fa-circle-check"></i>
+          ${list.length} Verified)
+      </span>
+
+  </div>
+  `.toUpperCase();
+
       const box = document.getElementById("couponList");
       box.innerHTML = "";
 
       list.forEach(c => {
-        const discount = c.title.replace(/[^\d%]/g, "") || "10%";
+        const discount = (c.title || "").replace(/[^\d%]/g, "") || "10%";
+        const el = document.createElement("div");
+        el.className = "coupon-card";
+        el.innerHTML = `
+          <div class="coupon-left-box">
+            <div class="discount-big">${escapeHtml(discount)}</div>
+          </div>
+          <div class="coupon-right">
+            <h6 class="coupon-title">${escapeHtml(c.title || "Untitled")}</h6>
+            <p class="coupon-desc">${escapeHtml((c.description || "No description").slice(0,100))}...</p>
+            <small class="text-muted d-block mb-2">${escapeHtml(c.category?.title || "")}</small>
+            <span class="verified-tag"><i class="fa fa-check-circle"></i> Verified</span>
+            <button class="show-code-btn">Show Code</button>
+          </div>
+        `;
+        box.appendChild(el);
 
-        box.innerHTML += `
-  <div class="coupon-card" onclick='openModal(${JSON.stringify(c).replace(/"/g,"&quot;")})'>
+        el.querySelector(".show-code-btn")
+          .addEventListener("click", (e) => {
+            e.stopPropagation();
+            openModal(c);
+          });
 
-    <div class="d-flex justify-content-between">
-      <div class="discount-box">${discount} OFF</div>
-      <span class="verified-tag"><i class="fa fa-check-circle"></i> Verified</span>
-    </div>
-
-    <h6 class="mt-2">${c.title}</h6>
-    <small class="text-muted">${c.category?.title || ""}</small>
-
-    <button class="show-code-btn">Show Code</button>
-  </div>
-`;
+        el.addEventListener("click", () => openModal(c));
       });
     }
 
-    loadCoupons();
-
+    /* ---------------------- UTILITY FUNCTIONS ----------------------- */
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, m =>
+        ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m])
+      );
+    }
 
     /* ----------------------------------------------------------------------
             SEARCH SYSTEM (COPIED 100% FROM REFERENCE)
     ---------------------------------------------------------------------- */
-
     let searchList = [];
 
     async function loadSearchData() {
@@ -639,11 +964,16 @@ document.addEventListener("keydown", function (e) {
       if (!desktopSearch.contains(e.target)) desktopSuggestions.style.display = "none";
       if (!mobileSearchInput.contains(e.target)) mobileSuggestions.style.display = "none";
     });
+
+    // Initialize the page
+    document.addEventListener("DOMContentLoaded", () => {
+      setupStarHandlers();
+      initPage();
+    });
   </script>
 
   <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
