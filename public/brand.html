@@ -787,10 +787,27 @@
       document.getElementById("modalCategory").innerText = c.category?.title || "";
 
       document.getElementById("modalBtn").onclick = () => {
-        navigator.clipboard.writeText(c.code);
-        closeModal();
-        showCountdownToast(8, c.url);
-      };
+  const text = c.code;
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text);
+  } else {
+    // Fallback for HTTP
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+  }
+
+  closeModal();
+  showCountdownToast(8, c.url);
+};
+
 
       document.getElementById("couponModal").style.display = "flex";
     }
