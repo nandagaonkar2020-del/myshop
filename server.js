@@ -236,7 +236,7 @@ app.get("/test-uploads", (req, res) => {
       const stats = fs.statSync(filePath);
       return {
         name: file,
-        url: `http://localhost:${PORT}/uploads/${file}`,
+        url: `/uploads/${file}`,
         directUrl: `/uploads/${file}`,
         size: stats.size,
         created: stats.birthtime
@@ -306,7 +306,7 @@ app.get("*", (req, res) => {
 /* -----------------------------------------------------
    START SERVER
 ----------------------------------------------------- */
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📁 Uploads accessible at: http://localhost:${PORT}/uploads/`);
   console.log(`🔧 Test uploads: http://localhost:${PORT}/test-uploads`);
