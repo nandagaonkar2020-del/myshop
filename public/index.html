@@ -1030,7 +1030,7 @@ document.addEventListener("click", function (e) {
     document.getElementById("modalCategory").innerText = coupon.category?.title || "";
 
       document.getElementById("modalBtn").onclick = () => {
-  const text = c.code;
+  const text = coupon.code;
 
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text);
@@ -1048,7 +1048,7 @@ document.addEventListener("click", function (e) {
   }
 
   closeModal();
-  showCountdownToast(8, c.url);
+  showCountdownToast(8, coupon.url);
 };
 
     document.getElementById("couponModal").style.display = "flex";
