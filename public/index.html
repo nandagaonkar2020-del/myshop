@@ -730,43 +730,62 @@
     mobileList.style.display = "none";
   }
 
-  /* ---------------- LOAD BRANDS (5 + VIEW MORE) ---------------- */
-  async function loadBrands() {
+  /* ---------------- LOAD BRANDS (SELECTED 5 + VIEW MORE) ---------------- */
+async function loadBrands() {
 
-    let res = await fetch("/api/categories");
-    let categories = await res.json();
+  // 👇 SELECTED BRANDS IN REQUIRED ORDER
+  const selectedBrands = [
+      "Amazon",
+    "Flipkart",
+    "Ajio",
+    "yas island",
+    "the meuseium of future"
+  ];
 
-    const box = document.getElementById("brandContainer");
-    box.innerHTML = "";
+  let res = await fetch("/api/categories");
+  let categories = await res.json();
 
-    if (!Array.isArray(categories)) return;
+  const box = document.getElementById("brandContainer");
+  box.innerHTML = "";
 
-    const firstFive = categories.slice(0, 5);
+  if (!Array.isArray(categories)) return;
 
-    // Insert only first 5 cards
-    firstFive.forEach(cat => {
-      box.innerHTML += `
-        <div class="swiper-slide">
-          <div class="brand-card-new" onclick="openBrand('${cat.slug}')">
-            <img src="${cat.imagePath}">
-            <div class="brand-title">${cat.title}</div>
-          </div>
-        </div>`;
-    });
+  // Map categories by title (case-insensitive)
+  const categoryMap = {};
+  categories.forEach(cat => {
+    categoryMap[cat.title.toLowerCase()] = cat;
+  });
 
-    // Add 6th "VIEW MORE" card
-    if (categories.length > 5) {
-      box.innerHTML += `
-        <div class="swiper-slide">
-          <div class="view-more-card" onclick="window.location.href='brands.html'">
-            <i class="fa-solid fa-arrow-right"></i>
-            <p>View More</p>
-          </div>
-        </div>`;
-    }
+  // 🔥 Insert only selected 5 in exact order
+  selectedBrands.forEach(brandName => {
+    const cat = categoryMap[brandName.toLowerCase()];
+    if (!cat) return;
 
-    brandSwiper.update();
+    box.innerHTML += `
+      <div class="swiper-slide">
+        <div class="brand-card-new" onclick="openBrand('${cat.slug}')">
+          <img src="${cat.imagePath}">
+          <div class="brand-title">${cat.title}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  // ➕ 6th "VIEW MORE" card (same as your code)
+  if (categories.length > selectedBrands.length) {
+    box.innerHTML += `
+      <div class="swiper-slide">
+        <div class="view-more-card" onclick="window.location.href='brands.html'">
+          <i class="fa-solid fa-arrow-right"></i>
+          <p>View More</p>
+        </div>
+      </div>
+    `;
   }
+
+  brandSwiper.update();
+}
+
 
   function openBrand(slug) {
     window.location.href = `/brand/${slug}`;
