@@ -1003,19 +1003,30 @@ document.addEventListener("click", function (e) {
 
     let cards = "";
 
-    list.forEach(c => {
-      let discount = c.title.replace(/[^\d%]/g, "") || "10%";
+  list.forEach((c, index) => {
+  let discount = c.title.replace(/[^\d%]/g, "") || "10%";
 
-      cards += `
-        <div class="swiper-slide">
-    <div class="coupon-card-mini" onclick='openCouponModal(${JSON.stringify(c).replace(/"/g, "&quot;")})'>
-      <div class="discount">${discount} OFF</div>
-      <div class="title">${c.title}</div>
-      <div class="description">${c.description || ''}</div>
+  cards += `
+    <div class="swiper-slide">
+      <div class="coupon-card-mini" data-index="${index}">
+        <div class="discount">${discount} OFF</div>
+        <div class="title">${c.title}</div>
+        <div class="description">${c.description || ''}</div>
+      </div>
     </div>
-  </div>
-      `;
-    });
+  `;
+});
+document.addEventListener("click", function (e) {
+  const card = e.target.closest(".coupon-card-mini");
+  if (!card) return;
+
+  const index = card.dataset.index;
+  if (index === undefined) return;
+
+  const coupon = coupons[index];
+  openCouponModal(coupon);
+});
+
 
     // 6th mandatory "View More" card
     cards += `
